@@ -1,4 +1,4 @@
-module tinygametools
+module github.com/galaco/tinygametools
 
 go 1.12
 

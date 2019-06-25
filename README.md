@@ -1,8 +1,7 @@
 [![GoDoc](https://godoc.org/github.com/Galaco/tinyGameTools?status.svg)](https://godoc.org/github.com/Galaco/tinyGameTools)
 [![Go report card](https://goreportcard.com/badge/github.com/galaco/tinyGameTools)](https://goreportcard.com/badge/github.com/galaco/tinyGameTools)
 [![GolangCI](https://golangci.com/badges/github.com/galaco/tinyGameTools.svg)](https://golangci.com)
-[![Build Status](https://travis-ci.com/Galaco/tinyGameTools.svg?branch=master)](https://travis-ci.com/Galaco/tinyGameTools)
-[![CircleCI](https://circleci.com/gh/Galaco/tinyGameTools/tree/master.svg?style=svg)](https://circleci.com/gh/Galaco/tinyGameTools/tree/master)
+![CircleCI](https://circleci.com/gh/Galaco/tinyGameTools/tree/master.svg?style=svg)](https://circleci.com/gh/Galaco/tinyGameTools/tree/master)
 [![codecov](https://codecov.io/gh/Galaco/tinyGameTools/branch/master/graph/badge.svg)](https://codecov.io/gh/Galaco/tinyGameTools)
 
 # TinyGameTools
