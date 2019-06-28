@@ -19,7 +19,7 @@ func TestEventManager_Publish(t *testing.T) {
 	evtCallback := func(event Event) {
 		called = true
 	}
-	_ = sut.Subscribe(evtTest.Type(), &evtCallback)
+	_ = sut.Subscribe(evtTest.Type(), evtCallback, evtTest)
 	err := sut.Publish(evtTest)
 	if err != nil {
 		t.Error(err)
@@ -33,7 +33,7 @@ func TestEventManager_Subscribe(t *testing.T) {
 	sut := NewEventManager()
 	evtName := EventName("foo")
 	evtCallback := func(event Event) {}
-	err := sut.Subscribe(evtName, &evtCallback)
+	err := sut.Subscribe(evtName, evtCallback, evtName)
 	if err != nil {
 		t.Error(err)
 	}
@@ -46,11 +46,11 @@ func TestEventManager_Unsubscribe(t *testing.T) {
 	sut := NewEventManager()
 	evtName := EventName("foo")
 	evtCallback := func(event Event) {}
-	err := sut.Subscribe(evtName, &evtCallback)
+	err := sut.Subscribe(evtName, evtCallback, evtName)
 	if err != nil {
 		t.Error(err)
 	}
-	err = sut.Unsubscribe(evtName, &evtCallback)
+	err = sut.Unsubscribe(evtName, evtName)
 	if err != nil {
 		t.Error(err)
 	}

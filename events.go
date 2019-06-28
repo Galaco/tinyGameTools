@@ -13,6 +13,18 @@ var (
 // EventName
 type EventName string
 
+type eventListener struct {
+	owner interface{}
+	callback func (Event)
+}
+
+func newEventListener(owner interface{}, callback func(Event)) eventListener {
+	return eventListener{
+		owner: owner,
+		callback: callback,
+	}
+}
+
 // Event
 type Event interface {
 	// Type returns the event identifier
@@ -25,33 +37,33 @@ type Event interface {
 // EventManager provides a lightweight pub/sub utility
 // for passing events around.
 type EventManager struct {
-	listeners   map[EventName][]*func(event Event)
+	listeners   map[EventName][]eventListener
 	queuedEvent map[time.Duration]Event
 }
 
 // Subscribe takes a callback function and bind it with an EventName.
 // When an event of that EventName is published, the callback will be executed.
-func (service *EventManager) Subscribe(eventName EventName, callback *func(event Event)) error {
+func (service *EventManager) Subscribe(eventName EventName, callback func(event Event), owner interface{}) error {
 	if service.listeners[eventName] == nil {
-		service.listeners[eventName] = []*func(event Event){callback}
+		service.listeners[eventName] = []eventListener{newEventListener(owner, callback)}
 	} else {
-		service.listeners[eventName] = append(service.listeners[eventName], callback)
+		service.listeners[eventName] = append(service.listeners[eventName], newEventListener(owner, callback))
 	}
 
 	return nil
 }
 
 // Unsubscribe unassociated a particular callback from an EventName
-func (service *EventManager) Unsubscribe(eventName EventName, callback *func(event Event)) error {
+func (service *EventManager) Unsubscribe(eventName EventName, owner interface{}) error {
 	if service.listeners[eventName] == nil {
 		return ErrorAlreadyUnsubscribed
 	}
 
-	for idx, c := range service.listeners[eventName] {
-		if c == callback {
+	for idx, listener := range service.listeners[eventName] {
+		if listener.owner == owner {
 			if idx == 0 {
 				if len(service.listeners[eventName]) == 1 {
-					service.listeners[eventName] = []*func(event Event){}
+					service.listeners[eventName] = make([]eventListener, 0)
 				} else {
 					service.listeners[eventName] = service.listeners[eventName][1:]
 				}
@@ -72,8 +84,8 @@ func (service *EventManager) Publish(event Event) error {
 	if service.listeners[event.Type()] == nil {
 		return nil
 	}
-	for _, callback := range service.listeners[event.Type()] {
-		(*callback)(event)
+	for _, listener := range service.listeners[event.Type()] {
+		listener.callback(event)
 	}
 
 	return nil
@@ -82,6 +94,6 @@ func (service *EventManager) Publish(event Event) error {
 // NewEventManager returns a new EventManager
 func NewEventManager() *EventManager {
 	return &EventManager{
-		listeners: map[EventName][]*func(event Event){},
+		listeners: map[EventName][]eventListener{},
 	}
 }
