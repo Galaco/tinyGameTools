@@ -2,7 +2,6 @@ package tinygametools
 
 import (
 	"github.com/pkg/errors"
-	"time"
 )
 
 var (
@@ -38,7 +37,6 @@ type Event interface {
 // for passing events around.
 type EventManager struct {
 	listeners   map[EventName][]eventListener
-	queuedEvent map[time.Duration]Event
 }
 
 // Subscribe takes a callback function and bind it with an EventName.

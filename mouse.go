@@ -41,7 +41,7 @@ func (mouse *Mouse) Y() float64 {
 
 // IsButtonPressed returns if a particular mouse button has been pressed.
 func (mouse *Mouse) IsButtonPressed(key Key) bool {
-	return mouse.keyMap[key] == true
+	return mouse.keyMap[key]
 }
 
 // AddMousePosCallback
